@@ -38,16 +38,16 @@ int Bureaucrat::getGrade() const {
     return _grade;
 }
 
-void Bureaucrat::signForm(From& form) {
+void Bureaucrat:: signForm(Form& form) const{
     try
     {
-        form.besignd(*this);
-        std::cout << getName << " signed " << form.getName() << std::endl;
+        form.beSigned(*this);
+        std::cout << getName() << " signed " << form.getName() << std::endl;
     }
     catch (std::exception & e)
     {
         std::cout << getName() << " couldn’t sign " << form.getName()
-                  << "because" << e.what() << std::endl; 
+                  << " because " << e.what() << std::endl; 
     }
 }
 
@@ -66,11 +66,11 @@ void Bureaucrat::decrementGrade() {
 
 // Exception Messages
 const char* Bureaucrat::GradeTooHighException::what() const throw() {
-    return "GradeTooHighException: Grade is too high.";
+    return "Error: Grade is too high.";
 }
 
 const char* Bureaucrat::GradeTooLowException::what() const throw() {
-    return "GradeTooLowException: Grade is too low.";
+    return "Error: Grade is too low.";
 }
 
 // Overload of the insertion operator

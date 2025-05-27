@@ -1,10 +1,9 @@
 #ifndef AFORM_HPP
 #define AFORM_HPP
 
-#include <iostream>
-#include "Bureaucrat.hpp"
+#include "iostream"
 
-class Bureaucrat; // Forward declaration
+class Bureaucrat;
 
 class AForm {
 private:
@@ -15,10 +14,10 @@ private:
 
 public:
     // Constructors and Destructor
-    Form(const std::string& name, int gradeToSign, int gradeToExecute);
-    Form(const Form& other);
-    Form& operator=(const Form& other);
-    virtual ~Form();
+    AForm(const std::string& name, int gradeToSign, int gradeToExecute);
+    AForm(const AForm& other);
+    AForm& operator=(const AForm& other);
+    virtual ~AForm();
 
     // Getters
     const std::string& getName() const;
@@ -28,21 +27,26 @@ public:
 
     // Member Functions
     void beSigned(const Bureaucrat& bureaucrat);
-    virtual void execute(Bureaucrat const & executor) const = 0;
+    virtual void execute(const Bureaucrat& executor) const = 0;
 
     // Exception Classes
     class GradeTooHighException : public std::exception {
     public:
-        virtual const char* what() const noexcept;
+        virtual const char* what() const throw();
     };
 
     class GradeTooLowException : public std::exception {
     public:
-        virtual const char* what() const noexcept;
+        virtual const char* what() const throw();
+    };
+
+    class FomrNotSignedException : public std::exception {
+    public:
+        virtual const char * what() const throw();
     };
 };
 
 // Operator Overload
-std::ostream& operator<<(std::ostream& os, const Form& form);
+std::ostream& operator<<(std::ostream& os, const AForm& form);
 
-#endif // FORM_HPP
+#endif
