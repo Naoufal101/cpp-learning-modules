@@ -12,22 +12,18 @@ Bureaucrat::Bureaucrat(const std::string& name, int grade)
 // Copy Constructor
 Bureaucrat::Bureaucrat(const Bureaucrat& other)
     : _name(other._name), _grade(other._grade) {
-    // Grade validation is not necessary here as 'other' is already valid
 }
 
 // Assignment Operator
 Bureaucrat& Bureaucrat::operator=(const Bureaucrat& other) {
     if (this != &other) {
         _grade = other._grade;
-        // _name is const and cannot be assigned
     }
     return *this;
 }
 
 // Destructor
-Bureaucrat::~Bureaucrat() {
-    // No dynamic resources to clean up
-}
+Bureaucrat::~Bureaucrat() {}
 
 // Accessors
 const std::string& Bureaucrat::getName() const {
@@ -47,7 +43,7 @@ void Bureaucrat:: signForm(Form& form) const{
     catch (std::exception & e)
     {
         std::cout << getName() << " couldn’t sign " << form.getName()
-                  << " because " << e.what() << std::endl; 
+                  << ". Because, " << e.what() << std::endl; 
     }
 }
 
