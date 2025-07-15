@@ -6,17 +6,17 @@
 #    By: nhimad <nhimad@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/19 22:22:34 by nhimad            #+#    #+#              #
-#    Updated: 2025/07/15 15:20:30 by nhimad           ###   ########.fr        #
+#    Updated: 2025/07/15 15:41:49 by nhimad           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = Span
+NAME = MutantStack
 
 C = c++
 FLAGS = -Wall -Wextra -Werror -std=c++98
 
-SRCS = main.cpp Span.cpp
-HEADER = Span.hpp
+SRCS = main.cpp 
+HEADER = MutantStack.hpp
 
 OBJS = $(SRCS:.cpp=.o)
 

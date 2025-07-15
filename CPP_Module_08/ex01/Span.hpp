@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Span.hpp                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nhimad <nhimad@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/15 15:41:03 by nhimad            #+#    #+#             */
+/*   Updated: 2025/07/15 15:41:04 by nhimad           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef SPAN_HPP
 #define SPAN_HPP
 
@@ -5,6 +17,7 @@
 #include <vector>
 #include <algorithm>
 #include <climits>
+#include <list>
 
 class Span {
     private:
@@ -21,7 +34,9 @@ class Span {
 
         template <typename T>
         void addNumber(T begin, T end) {
-            int d = std::distance(begin, end);
+            typename std::iterator_traits<T>::difference_type d;
+            
+            d = std::distance(begin, end);
             if (d + v.size() > N)
                 throw std::length_error("Span capacity exceeded");
             v.insert(v.end(), begin, end);
