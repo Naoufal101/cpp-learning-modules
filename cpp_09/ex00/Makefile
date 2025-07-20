@@ -13,7 +13,7 @@
 NAME = btc
 
 C = c++
-FLAGS = -Wall -Wextra -Werror -std=c++98
+FLAGS = -Wall -Wextra -Werror -std=c++11
 
 SRCS = main.cpp BitcoinExchange.cpp
 HEADER = BitcoinExchange.hpp

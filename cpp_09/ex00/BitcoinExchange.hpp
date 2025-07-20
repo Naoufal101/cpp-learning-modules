@@ -28,8 +28,13 @@ class BitcoinExchange {
 		BitcoinExchange &operator=(const BitcoinExchange &other);
 		~BitcoinExchange() {};
 
-		void loadDatabase(const std::string& dbFile);
-		void displayDb();
+		typedef std::map<std::string, float>::const_iterator const_iterator;
+
+		void	loadDatabase(const std::string& filename);
+		void	processInput(const std::string& filename);
+		void	processLine(const std::string& date, const float& value);
+		float	getRate(const std::string& str);
+		void	displayDb();
 };
 
 #endif
