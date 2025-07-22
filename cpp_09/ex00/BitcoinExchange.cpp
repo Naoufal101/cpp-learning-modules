@@ -30,22 +30,26 @@ void BitcoinExchange::loadDatabase(const std::string &filename) {
 	std::string line;
 	std::getline(dbFile, line);
 	while (std::getline(dbFile, line)) {
-		std::string date, price;
+		std::string d, price;
 		std::istringstream iss(line);
-		if (!std::getline(iss, date, ',') || !std::getline(iss, price))
+		if (!std::getline(iss, d, ',') || !std::getline(iss, price))
+			continue;
+		std::istringstream dateStream(d);
+		char sep;
+		if (!(dateStream >> this->date.y >> sep >> this->date.m >> sep >> this->date.d) || sep != '-' || !dateStream.eof())
 			continue;
 		data_base[date] = std::strtod(price.c_str(), NULL);
 	}
 	dbFile.close();
 }
 
-float BitcoinExchange::getRate(const std::string& date) {
+float BitcoinExchange::getRate() {
 	const_iterator it = data_base.lower_bound(date);
 
 	if (it != data_base.end() && it->first == date)
 		return it->second;
 	if (it == data_base.begin())
-		throw std::runtime_error("Error: date is too early");
+		return (-1.0f);
 	--it;
 	return it->second;	
 }
@@ -59,23 +63,27 @@ bool	isValideValue(float value) {
 	return (true);
 }
 
-bool	isValideDate(std::string& date) {
-	int year, month, day;
+bool	BitcoinExchange::isValideDate(std::string& d) {
 	char sep;
 
-	std::istringstream iss(date);
-	if (!(iss >> year >> sep >> month >> sep >> day) || !iss.eof())
+	std::istringstream iss(d);
+	if (!(iss >> date.y >> sep >> date.m >> sep >> date.d) || !iss.eof())
 		return false;
-	if (year <= 0 || month <= 0 || month > 12 || day <= 0 || day >= 31)
+	if (date.y <= 0 || date.m <= 0 || date.m > 12 || date.d <= 0 || date.d >= 31)
 		return false;
 
 	return true;
 }
 
-void	BitcoinExchange::processLine(const std::string& date, const float& value) {
-	
-	std::cout << date << " => " << value << " = " << value * getRate(date);
-	std::cout << std::endl;
+void	BitcoinExchange::processLine( const float& value) {
+	float rate = getRate();
+	if (rate < 0.0f) {
+		std::cerr << "Error: date too early." << std::endl;
+		return;
+	}
+
+	std::cout << date.y  << "-" << date.m << "-" << date.d << " => " 
+	<< value << " = " << value * rate << std::endl;
 }
 
 void	BitcoinExchange::processInput(const std::string& filename) {
@@ -91,24 +99,24 @@ void	BitcoinExchange::processInput(const std::string& filename) {
 		float value;
 
 		if (!(iss >> date >> sep >> value) || sep != "|" || !iss.eof() )  {
-            std::cerr << "Error: bad format => " << line << "\n";
-            continue;
-        }
+			std::cerr << "Error: bad format => " << line << "\n";
+			continue;
+		}
 
 		if (!isValideDate(date)) {
-            std::cerr << "Error: bad input => " << line << "\n";
-            continue;
-        }
+			std::cerr << "Error: bad input => " << line << "\n";
+			continue;
+		}
 		if (!isValideValue(value))
 			continue;
 
-		processLine(date, value);
+		processLine(value);
 	}
 	inFile.close();
 }
 
-void BitcoinExchange::displayDb() {
-	for (const_iterator it = data_base.begin();
-		 it != data_base.end(); it++)
-		 std::cout << it->first << " " << it->second << std::endl;
-}
+// void BitcoinExchange::displayDb() {
+// 	for (const_iterator it = data_base.begin();
+// 		 it != data_base.end(); it++)
+// 		 std::cout << it->first << " " << it->second << std::endl;
+// }

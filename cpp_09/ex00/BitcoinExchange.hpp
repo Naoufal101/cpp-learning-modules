@@ -18,9 +18,25 @@
 #include <sstream>
 #include <map>
 
+struct Date {
+	int y, m, d;
+
+	bool operator<(const Date& other) const {
+		if (y != other.y) return y < other.y;
+		if (m != other.m) return m < other.m;
+		return d < other.d;
+
+	};
+
+	bool operator==(const Date& other) const {
+		return ((y == other.y) && (m == other.m) && (d == other.d));
+	};
+};
+
 class BitcoinExchange {
 	private:
-		std::map<std::string, float> data_base;
+		std::map<Date, float>	data_base;
+		Date					date;
 		
 	public:
 		BitcoinExchange() {};
@@ -28,12 +44,14 @@ class BitcoinExchange {
 		BitcoinExchange &operator=(const BitcoinExchange &other);
 		~BitcoinExchange() {};
 
-		typedef std::map<std::string, float>::const_iterator const_iterator;
+		typedef std::map<Date, float>::const_iterator const_iterator;
+
+		bool	isValideDate(std::string& date);
 
 		void	loadDatabase(const std::string& filename);
 		void	processInput(const std::string& filename);
-		void	processLine(const std::string& date, const float& value);
-		float	getRate(const std::string& str);
+		void	processLine(const float& value);
+		float	getRate();
 		void	displayDb();
 };
 
