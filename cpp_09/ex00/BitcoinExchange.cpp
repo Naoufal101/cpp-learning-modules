@@ -51,19 +51,19 @@ float BitcoinExchange::getRate() {
 	if (it == data_base.begin())
 		return (-1.0f);
 	--it;
-	return it->second;	
+	return it->second;
 }
 
-bool	isValideValue(float value) {
+bool isValideValue(float value) {
 	if (value < 0.0f)
-		return (std::cerr << "Error: not a positive number." <<std::endl, false);
+		return (std::cerr << "Error: not a positive number." << std::endl, false);
 	if (value > 1000.0f)
-		return (std::cerr << "Error: Too much Bitcoin." <<std::endl, false);
+		return (std::cerr << "Error: Too much Bitcoin." << std::endl, false);
 
-	return (true);
+	return true;
 }
 
-bool	BitcoinExchange::isValideDate(std::string& d) {
+bool BitcoinExchange::isValideDate(std::string& d) {
 	char sep;
 
 	std::istringstream iss(d);
@@ -75,18 +75,20 @@ bool	BitcoinExchange::isValideDate(std::string& d) {
 	return true;
 }
 
-void	BitcoinExchange::processLine( const float& value) {
+void BitcoinExchange::processLine(const float& value) {
 	float rate = getRate();
 	if (rate < 0.0f) {
 		std::cerr << "Error: date too early." << std::endl;
 		return;
 	}
 
-	std::cout << date.y  << "-" << date.m << "-" << date.d << " => " 
-	<< value << " = " << value * rate << std::endl;
+	std::cout << date.y << "-"
+			  << std::setw(2) << std::setfill('0') << date.m << "-"
+			  << std::setw(2) << std::setfill('0') << date.d << " => "
+			  << value << " = " << value * rate << std::endl;
 }
 
-void	BitcoinExchange::processInput(const std::string& filename) {
+void BitcoinExchange::processInput(const std::string& filename) {
 	std::ifstream inFile(filename);
 	if (!inFile.is_open())
 		throw std::runtime_error("Error: could not open file.");
@@ -98,7 +100,7 @@ void	BitcoinExchange::processInput(const std::string& filename) {
 		std::string date, sep;
 		float value;
 
-		if (!(iss >> date >> sep >> value) || sep != "|" || !iss.eof() )  {
+		if (!(iss >> date >> sep >> value) || sep != "|" || !iss.eof()) {
 			std::cerr << "Error: bad format => " << line << "\n";
 			continue;
 		}
